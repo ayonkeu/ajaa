@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/tx
+		   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+<context:component-scan base-package="de.msggillardon.app.sscalculator.dao, de.msggillardon.app.sscalculator.service"/>
+	<import resource="applicationContext-security.xml" />
+	
+	<!--import resource="spring-database.xml" /-->
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe" />
+		<property name="username" value="Aime" />
+		<property name="password" value="Aime" />
+	</bean>
+	<!-- 
+		hibernate.current_session_context_class=thread
+ 	-->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+				hibernate.hbm2ddl.auto=update
+				hibernate.show_sql=true
+				hibernate.connection.pool_size=5
+				hibernate.connection.autocommit=true
+				javax.persistence.validation.mode=none
+			</value>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>de.msggillardon.app.sscalculator.model.User</value>
+				<value>de.msggillardon.app.sscalculator.model.Roles</value>
+				<value>de.msggillardon.app.sscalculator.model.UserSheet</value>
+				<value>de.msggillardon.app.sscalculator.model.OrgSheet</value>
+				<value>de.msggillardon.app.sscalculator.model.TemplateSheet</value>
+				<value>de.msggillardon.app.sscalculator.model.Organisation</value>
+				<value>de.msggillardon.app.sscalculator.model.OrgSheetData</value>
+				<value>de.msggillardon.app.sscalculator.model.UserSheetData</value>
+				<value>de.msggillardon.app.sscalculator.model.TemplateSheetData</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+   <!-- Definition for functionTld bean -->
+   <!--bean id = "customFunctionWs" class = "de.msggillardon.app.sscalculator.function.CustomFunctionWS">
+   </bean-->   
+   
+   	   <!-- Definition for functionTld bean -->
+   <!--bean id = "functionServiceBis" class = "de.msggillardon.app.sscalculator.function.FunctionServiceBis">
+   </bean-->  
+	
+   <!-- Definition for functionTld bean -->
+   <!--bean id = "functiontld" class = "de.msggillardon.app.sscalculator.function.FunctionTldFile">
+      <constructor-arg type="java.lang.Class" value="de.msggillardon.app.sscalculator.function.CusFunc"></constructor-arg>
+   </bean--> 
+   
+   <!--bean id = "functiontld" class = "de.msggillardon.app.sscalculator.function.FunctionTldFile">
+      <constructor-arg type="java.lang.Class" value="de.msggillardon.app.sscalculator.function.CustomFunction"></constructor-arg>
+   </bean-->     
+
+	<tx:annotation-driven />
+</beans>
+	
